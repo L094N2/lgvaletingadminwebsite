@@ -13,7 +13,7 @@
 <body>
   <div class="bg"></div>
   <header class="topbar">
-    <a class="brand" href="/"><img src="/assets/lg-valeting-logo.png" alt="LG Valeting"><span>Control Panel</span></a>
+    <a class="brand" href="/"><img src="/assets/lg-valeting-logo.png" alt="LG Valeting"><span>Admin Portal</span></a>
     <div class="top-actions">
       <a class="ghost" href="https://lgvaleting.com" target="_blank">View website</a>
       <button class="profile-chip" id="profileChip">Login</button>
@@ -24,13 +24,13 @@
     <section class="login-screen card" id="loginScreen">
       <div class="login-copy">
         <span class="eyebrow">Secure admin access</span>
-        <h1>LG Valeting control</h1>
+        <h1>LG Valeting control panel.</h1>
         <p>Login with your master/admin account to manage bookings, customers, reviews and staff permissions.</p>
       </div>
       <form class="login-card" id="loginForm">
         <h2>Admin login</h2>
         <label>Email<input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com"></label>
-        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="•••••••"></label>
         <button class="primary" type="submit">Login</button>
         <p id="loginMsg" class="msg"></p>
       </form>
@@ -51,8 +51,8 @@
           <p class="muted">Manage LG Valeting without touching the public website.</p>
         </div>
         <div class="quick-actions">
-          <button class="ghost" id="refreshBtn">Refresh</button>
-          <button class="primary" data-tab="manual">Add booking</button>
+          <buton class="ghost" id="refreshBtn">Refresh</buton>
+          <buton class="primary" data-tab="manual">Add booking</button>
         </div>
       </div>
 
@@ -69,63 +69,8 @@
         <button data-tab="customers">Customers</button>
         <button data-tab="reviews">Reviews</button>
         <button data-tab="admins">Admin accounts</button>
+        <button id="analyticsTabBtn" data-tab="analytics" hidden>Analytics</button>
         <button data-tab="settings">Settings</button>
       </nav>
-
-      <section class="panel active" id="panel-bookings">
-        <div class="panel-head"><h2>Bookings</h2><select id="bookingFilter"><option value="all">All</option><option>Pending</option><option>Confirmed</option><option>Completed</option><option>Declined</option><option>Cancelled</option></select></div>
-        <div class="list" id="bookingsList"></div>
-      </section>
-
-      <section class="panel" id="panel-manual">
-        <h2>Add manual booking</h2>
-        <form class="grid-form" id="manualBookingForm">
-          <label>Name<input id="mName" required></label>
-          <label>Email<input id="mEmail" type="email"></label>
-          <label>Phone<input id="mPhone" required></label>
-          <label>Vehicle<input id="mVehicle" required></label>
-          <label>Service<select id="mService"><option value="Exterior Wash" data-price="10">Exterior Wash</option><option value="Full Valet" data-price="15">Full Valet</option><option value="Deep Interior Clean" data-price="20">Deep Interior Clean</option></select></label>
-          <label>Date<input id="mDate" type="date" required></label>
-          <label>Time<input id="mTime" type="time" required></label>
-          <label>Location<input id="mLocation" value="Crofton, Wakefield" required></label>
-          <label class="wide">Notes<textarea id="mNotes" rows="3"></textarea></label>
-          <label class="check"><input id="mWax" type="checkbox"> Add hybrid wax (+£5)</label>
-          <button class="primary wide">Create booking</button>
-        </form>
-      </section>
-
-      <section class="panel" id="panel-customers">
-        <h2>Customers</h2>
-        <div class="list" id="customersList"></div>
-      </section>
-
-      <section class="panel" id="panel-reviews">
-        <h2>Reviews</h2>
-        <div class="list" id="reviewsList"></div>
-      </section>
-
-      <section class="panel" id="panel-admins">
-        <h2>Admin accounts</h2>
-        <form class="inline-form" id="promoteForm">
-          <input id="promoteEmail" type="email" placeholder="registered@email.com" required>
-          <button class="primary">Promote to admin</button>
-        </form>
-        <div class="list" id="adminsList"></div>
-      </section>
-
-      <section class="panel" id="panel-settings">
-        <h2>Profile & settings</h2>
-        <div class="settings-grid">
-          <div class="card inner"><strong id="settingsEmail">—</strong><span id="settingsRole">—</span></div>
-          <button class="ghost" id="logoutBtn">Sign out</button>
-        </div>
-      </section>
-    </section>
-  </main>
-
-  <div class="toast" id="toast"></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/auth-config.js"></script>
-  <script src="/admin.js"></script>
 </body>
 </html>
