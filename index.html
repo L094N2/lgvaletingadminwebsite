@@ -1,25 +1,131 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LG Valeting Admin</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <main id="admin-app">
-    <section class="login-panel">
-      <h1>LG Valeting control</h1>
-      <p>Login with your master/admin account to manage bookings, customers, reviews and staff permissions.</p>
+  <div class="bg"></div>
+  <header class="topbar">
+    <a class="brand" href="/"><img src="/assets/lg-valeting-logo.png" alt="LG Valeting"><span>Control Panel</span></a>
+    <div class="top-actions">
+      <a class="ghost" href="https://lgvaleting.com" target="_blank">View website</a>
+      <button class="profile-chip" id="profileChip">Login</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="login-screen card" id="loginScreen">
+      <div class="login-copy">
+        <span class="eyebrow">Secure admin access</span>
+        <h1>LG Valeting control</h1>
+        <p>Login with your master/admin account to manage bookings, customers, reviews and staff permissions.</p>
+      </div>
+      <form class="login-card" id="loginForm">
+        <h2>Admin login</h2>
+        <label>Email<input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+        <button class="primary" type="submit">Login</button>
+        <p id="loginMsg" class="msg"></p>
+      </form>
     </section>
 
-    <section class="dashboard-panel">
-      <h2>Welcome back, Admin.</h2>
-      <p>Manage LG Valeting without touching the public website.</p>
+    <section id="notAdmin" class="card notice" hidden>
+      <h2>Account logged in, but not admin yet.</h2>
+      <p>This account must be promoted to <b>master</b> or <b>admin</b> in Supabase before it can open the dashboard.</p>
+      <code>Supabase → SQL Editor → run the master update SQL included in the ZIP</code>
+      <button class="ghost" id="logoutFromNotice">Logout</button>
+    </section>
+
+    <section id="dashboard" hidden>
+      <div class="hero-row">
+        <div>
+          <span class="eyebrow">Dashboard</span>
+          <h1>Welcome back, <span id="adminName">Admin</span>.</h1>
+          <p class="muted">Manage LG Valeting without touching the public website.</p>
+        </div>
+        <div class="quick-actions">
+          <button class="ghost" id="refreshBtn">Refresh</button>
+          <button class="primary" data-tab="manual">Add booking</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat card"><span>Pending</span><strong id="statPending">0</strong></div>
+        <div class="stat card"><span>Confirmed</span><strong id="statConfirmed">0</strong></div>
+        <div class="stat card"><span>Completed</span><strong id="statCompleted">0</strong></div>
+        <div class="stat card"><span>Estimated revenue</span><strong id="statRevenue">£0</strong></div>
+      </div>
+
+      <nav class="tabs">
+        <button class="active" data-tab="bookings">Bookings</button>
+        <button data-tab="manual">Manual booking</button>
+        <button data-tab="customers">Customers</button>
+        <button data-tab="reviews">Reviews</button>
+        <button data-tab="admins">Admin accounts</button>
+        <button data-tab="settings">Settings</button>
+      </nav>
+
+      <section class="panel active" id="panel-bookings">
+        <div class="panel-head"><h2>Bookings</h2><select id="bookingFilter"><option value="all">All</option><option>Pending</option><option>Confirmed</option><option>Completed</option><option>Declined</option><option>Cancelled</option></select></div>
+        <div class="list" id="bookingsList"></div>
+      </section>
+
+      <section class="panel" id="panel-manual">
+        <h2>Add manual booking</h2>
+        <form class="grid-form" id="manualBookingForm">
+          <label>Name<input id="mName" required></label>
+          <label>Email<input id="mEmail" type="email"></label>
+          <label>Phone<input id="mPhone" required></label>
+          <label>Vehicle<input id="mVehicle" required></label>
+          <label>Service<select id="mService"><option value="Exterior Wash" data-price="10">Exterior Wash</option><option value="Full Valet" data-price="15">Full Valet</option><option value="Deep Interior Clean" data-price="20">Deep Interior Clean</option></select></label>
+          <label>Date<input id="mDate" type="date" required></label>
+          <label>Time<input id="mTime" type="time" required></label>
+          <label>Location<input id="mLocation" value="Crofton, Wakefield" required></label>
+          <label class="wide">Notes<textarea id="mNotes" rows="3"></textarea></label>
+          <label class="check"><input id="mWax" type="checkbox"> Add hybrid wax (+£5)</label>
+          <button class="primary wide">Create booking</button>
+        </form>
+      </section>
+
+      <section class="panel" id="panel-customers">
+        <h2>Customers</h2>
+        <div class="list" id="customersList"></div>
+      </section>
+
+      <section class="panel" id="panel-reviews">
+        <h2>Reviews</h2>
+        <div class="list" id="reviewsList"></div>
+      </section>
+
+      <section class="panel" id="panel-admins">
+        <h2>Admin accounts</h2>
+        <form class="inline-form" id="promoteForm">
+          <input id="promoteEmail" type="email" placeholder="registered@email.com" required>
+          <button class="primary">Promote to admin</button>
+        </form>
+        <div class="list" id="adminsList"></div>
+      </section>
+
+      <section class="panel" id="panel-settings">
+        <h2>Profile & settings</h2>
+        <div class="settings-grid">
+          <div class="card inner"><strong id="settingsEmail">—</strong><span id="settingsRole">—</span></div>
+          <button class="ghost" id="logoutBtn">Sign out</button>
+        </div>
+      </section>
     </section>
   </main>
 
-  <script src="auth-config.js"></script>
-  <script src="admin.js"></script>
+  <div class="toast" id="toast"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/auth-config.js"></script>
+  <script src="/admin.js"></script>
 </body>
 </html>
